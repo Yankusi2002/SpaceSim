@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+vars:
+  GREETING: Hello, world!
+  CMAKE_DIR: build
+  BINARY: SpaceSimulation
+
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  configure:
+    desc: Configure the CMake project
+    cmds:
+      - cmake -S . -B {{.CMAKE_DIR}}
+
+  build:
+    desc: Build the project with CMake
+    deps: [configure]
+    cmds:
+      - cmake --build {{.CMAKE_DIR}}
+  configure-debug:
+    desc: Configure the CMake project with Debug flags
+    cmds:
+      - cmake -S . -B {{.CMAKE_DIR}} -DCMAKE_BUILD_TYPE=Debug
+
+  build-debug:
+    desc: Build the project with CMake (Debug)
+    deps: [configure-debug]
+    cmds:
+      - cmake --build {{.CMAKE_DIR}} --config Debug
+
+  run:
+    desc: Run the built executable
+    deps: [build]
+    cmds:
+      - ./{{.CMAKE_DIR}}/{{.BINARY}}
+    silent: false
+
+  run-debug:
+    desc: Run the built Debug executable (Good for GDB/Lldb)
+    deps: [build-debug]
+    cmds:
+      - ./{{.CMAKE_DIR}}/{{.BINARY}}
+    
