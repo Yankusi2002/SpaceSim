@@ -59,7 +59,7 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
   GLFWwindow *window =
-      glfwCreateWindow(1280, 720, "Solar System", nullptr, nullptr);
+      glfwCreateWindow(1600, 1000, "Solar System", nullptr, nullptr);
 
   if (!window) {
     std::cerr << "Failed to create GLFW window\n";

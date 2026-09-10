@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-#define GRAVITATION_CONSTANT 6.67430e-11f
+#define GRAVITATION_CONSTANT 50.0f
 
 class Simulation {
 public:

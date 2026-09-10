@@ -31,7 +31,7 @@ public:
   
   void setGravitationAcceleration(ImVec2 acceleration);
   void setVelocity(ImVec2 velocity);
-  ImVec2 getVelocity();
+  ImVec2 getVelocity() const;
 
 private:
   bool habitable;

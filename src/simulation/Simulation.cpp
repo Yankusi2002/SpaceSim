@@ -33,11 +33,9 @@ void Simulation::update(double deltaTime) {
       float accelerationTotal = force / planet->getMass();
       float ax = 0;
       float ay = 0;
-      if (deltaX != 0) {
+      if (distance >= 0.1f) {
         /// Acceleration direction
         ax = accelerationTotal * (deltaX / distance);
-      }
-      if (deltaY != 0) {
         ay = accelerationTotal * (deltaY / distance);
       }
 
@@ -91,6 +89,10 @@ float Simulation::getDistance(std::shared_ptr<CelestialBody> body1,
 float Simulation::calculateGravitationalPull(
     std::shared_ptr<CelestialBody> body1, std::shared_ptr<CelestialBody> body2,
     float distance) {
+
+  if (distance <= 0.1f) {
+    return 0.0f;
+  }
   float mass1 = body1->getMass();
   float mass2 = body2->getMass();
 

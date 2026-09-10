@@ -7,7 +7,7 @@ Planet::Planet(int id, const std::string& name, bool habitable,
       habitable(habitable) {
   // Constructor implementation
 }
-Planet::Planet(int id, const std::string& name): CelestialBody(id, name, CelestialBody::Position({{0.0f, 0.0f}}), 0.0, 0.0),
+Planet::Planet(int id, const std::string& name): CelestialBody(id, name, CelestialBody::Position({{0.0f, 0.0f}}), 1.0, 0.0),
            habitable(false) {
   // Default constructor implementation
 }
@@ -35,7 +35,7 @@ void Planet::setVelocity(ImVec2 velocity){
   m_velocity.y = velocity.y;
 }
 
-ImVec2 Planet::getVelocity(){
+ImVec2 Planet::getVelocity() const {
   return m_velocity;
 }
 

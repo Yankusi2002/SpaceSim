@@ -23,7 +23,6 @@ void PlanetWrapper::render(std::shared_ptr<Planet> planet) {
     ImGui::TreePop();
   }
 
-  ImGui::Text("Radius: %.3e", planet->getRadius());
   if (ImGui::TreeNodeEx("Radius", flag)) {
     float radius = planet->getRadius();
 
@@ -40,6 +39,13 @@ void PlanetWrapper::render(std::shared_ptr<Planet> planet) {
     ImGui::DragFloat("Y", &pos.y);
 
     planet->updatePos(pos);
+
+    ImGui::TreePop();
+  }
+  if (ImGui::TreeNodeEx("Velocity", flag)) {
+    ImVec2 velocity = planet->getVelocity();
+    ImGui::DragFloat("Vx", &velocity.x);
+    ImGui::DragFloat("Vy", &velocity.y);
 
     ImGui::TreePop();
   }
