@@ -24,6 +24,16 @@ tasks:
     deps: [configure]
     cmds:
       - cmake --build {{.CMAKE_DIR}}
+  configure-debug:
+    desc: Configure the CMake project with Debug flags
+    cmds:
+      - cmake -S . -B {{.CMAKE_DIR}} -DCMAKE_BUILD_TYPE=Debug
+
+  build-debug:
+    desc: Build the project with CMake (Debug)
+    deps: [configure-debug]
+    cmds:
+      - cmake --build {{.CMAKE_DIR}} --config Debug
 
   run:
     desc: Run the built executable
@@ -31,4 +41,10 @@ tasks:
     cmds:
       - ./{{.CMAKE_DIR}}/{{.BINARY}}
     silent: false
+
+  run-debug:
+    desc: Run the built Debug executable (Good for GDB/Lldb)
+    deps: [build-debug]
+    cmds:
+      - ./{{.CMAKE_DIR}}/{{.BINARY}}
     
