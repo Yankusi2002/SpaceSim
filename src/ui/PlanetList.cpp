@@ -21,7 +21,20 @@ void PlanetList::render(Simulation &simulation) {
     auto body = simulation.getPlanets();
     int id = body.size() + 1;
     std::string label = "Planet_" + std::to_string(id);
-    auto newPlanet = std::make_shared<Planet>(id, label);
+    CelestialBody::Position startPos{200.0f, 0.0f};
+    auto newPlanet =
+        std::make_shared<Planet>(id, label, /*habitable=*/false, startPos,
+                                 /*mass=*/1.0f, /*radius=*/5.0f);
+    auto star = simulation.getStars();
+    float dx = startPos.x - star[0]->getPos().x;
+    float dy = startPos.y - star[0]->getPos().y;
+    float r  = std::sqrt(dx*dx + dy*dy);
+    float vCirc = std::sqrt(GRAVITATION_CONSTANT * star[0]->getMass() / r);
+
+    // Tangentialrichtung = Radiusvektor um 90° gedreht
+    ImVec2 tangent(-dy / r, dx / r);
+
+    newPlanet->setVelocity(ImVec2(tangent.x * vCirc, tangent.y * vCirc));
     simulation.addPlanet(newPlanet);
 
     auto wrapper = std::make_shared<PlanetWrapper>();
