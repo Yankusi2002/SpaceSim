@@ -5,28 +5,30 @@
 
 class Star : public CelestialBody {
 public:
-  Star(int m_id, const std::string& m_name, double luminosity,
-       std::vector<CelestialBody::Position> position, double mass, double radius);
+  Star(int id, const std::string &name, float luminosity,
+       CelestialBody::Position position, float mass,
+       float radius);
 
-  double getLuminosity() const;
-  void setLuminosity(double luminosity);
+  Star(int id, const std::string &name);
+  float getLuminosity() const;
+  void setLuminosity(float luminosity);
 
-  double getGravitationalPull() const;
-  void setGravitationalPull(double gravitationalPull);
+  float getGravitationalPull() const;
+  void setGravitationalPull(float gravitationalPull);
 
-  void setMass(double mass) override;
-  void setRadius(double radius) override;
+  void setMass(float mass) override;
+  void setRadius(float radius) override;
 
-  double getMass() const override;
-  double getRadius() const override;
-  double getGravity() const override;
+  float getMass() const override;
+  float getRadius() const override;
+  float getGravity() const override;
 
   void update(double deltaTime) override;
 
 private:
-  double m_luminosity;
+  float m_luminosity;
   std::vector<CelestialBody::Position> m_position;
-  double m_gravitationalPull;
+  float m_gravitationalPull;
 
   void calculateGravitationalPull();
 };

@@ -5,6 +5,8 @@
 #include "PlanetList.hpp"
 #include "Star.hpp"
 
+#include "StarList.hpp"
+#include "WorldView.hpp"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -21,24 +23,24 @@ void renderPlanetList();
 
 int main() {
 
-//   CelestialBody::Position sunPosition{0.0f, 0.0f};
+  //   CelestialBody::Position sunPosition{0.0f, 0.0f};
 
-//   auto sun = std::make_shared<Star>(1, "Sun", 3.828e26, std::vector<CelestialBody::Position>{sunPosition}, 1.989e30, 6.9634e8);
+  //   auto sun = std::make_shared<Star>(1, "Sun", 3.828e26,
+  //   std::vector<CelestialBody::Position>{sunPosition}, 1.989e30, 6.9634e8);
 
-//   CelestialBody::Position earthPosition{
-//     1.496e11,
-//     0.0
-// };
+  //   CelestialBody::Position earthPosition{
+  //     1.496e11,
+  //     0.0
+  // };
 
-// auto earth = std::make_shared<Planet>(
-//     2,
-//     "Earth",
-//     true,
-//     std::vector<CelestialBody::Position>{earthPosition},
-//     5.972e24,
-//     6.371e6
-// );
-
+  // auto earth = std::make_shared<Planet>(
+  //     2,
+  //     "Earth",
+  //     true,
+  //     std::vector<CelestialBody::Position>{earthPosition},
+  //     5.972e24,
+  //     6.371e6
+  // );
 
   // -------------------------
   // GLFW initialisieren
@@ -77,6 +79,7 @@ int main() {
   ImGui::CreateContext();
 
   ImGuiIO &io = ImGui::GetIO();
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   (void)io;
 
   // Standard Dear ImGui Style
@@ -93,6 +96,8 @@ int main() {
   // -------------------------
   Simulation simulation;
   PlanetList planetList;
+  StarList starList;
+  WorldView worldview;
 
   // simulation.addStar(sun);
   // simulation.addPlanet(earth);
@@ -109,8 +114,11 @@ int main() {
     // -------------------------
     // Unser erstes Fenster
     // -------------------------
-
+    float deltaTime = io.DeltaTime;
     planetList.render(simulation);
+    starList.render(simulation);
+    worldview.render(simulation);
+    simulation.update(deltaTime);
 
     // -------------------------
     // Rendering

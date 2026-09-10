@@ -22,6 +22,9 @@ add_executable(SpaceSimulation
     imgui/backends/imgui_impl_opengl3.cpp
     src/ui/PlanetList.cpp
     src/ui/PlanetWrapper.cpp
+    src/ui/StarList.cpp
+    src/ui/StarWrapper.cpp
+    src/ui/WorldView.cpp
 
 )
 

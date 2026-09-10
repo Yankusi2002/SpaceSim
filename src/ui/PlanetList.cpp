@@ -14,7 +14,7 @@ void PlanetList::render(Simulation &simulation) {
       simulation.getPlanets(); // Assuming getBodies() returns a vector of
                                // shared_ptr<CelestialBody>
 
-  ImGui::Begin("Objects");
+  ImGui::Begin("PlanetList");
   if (ImGui::Button("Add Planet")) {
     // Handle adding a new planet
     // This could open a dialog or add a default planet to the simulation

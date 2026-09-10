@@ -1,5 +1,6 @@
 #pragma once
 
+#include "imgui.h"
 #include <vector>
 
 class CelestialBody {
@@ -9,17 +10,19 @@ public:
     float y;
   };
 
-  CelestialBody(int id , const std::string& name, std::vector<Position> position, double mass, double radius);
+  CelestialBody(int id , const std::string& name, CelestialBody::Position position, float mass, float radius);
   virtual void update(double deltaTime) = 0;
 
   // Setters
-  virtual void setMass(double mass) = 0;
-  virtual void setRadius(double radius) = 0;
+  virtual void setMass(float mass) = 0;
+  virtual void setRadius(float radius) = 0;
 
   // Getters
-  virtual double getMass() const = 0;
-  virtual double getRadius() const = 0;
-  virtual double getGravity() const = 0;
+  virtual float getMass() const = 0;
+  virtual float getRadius() const = 0;
+  virtual float getGravity() const = 0;
+  ImVec2 getPos() const;
+  void updatePos(ImVec2 pos); 
 
   const std::string getName();
   int getId();
@@ -28,10 +31,10 @@ protected:
   bool showBody = false; 
   std::string m_name;
   int m_id;
-  double m_mass;
-  double m_radius;
-  double m_gravity;
-  std::vector<Position> m_position;
+  float m_mass;
+  float m_radius;
+  float m_gravity;
+  Position m_position;
 };
 
 

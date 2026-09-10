@@ -1,45 +1,46 @@
-#include "PlanetWrapper.hpp"
+#include "StarWrapper.hpp"
 #include "imgui.h"
 
 #include <memory>
 
-void PlanetWrapper::render(std::shared_ptr<Planet> planet) {
+void StarWrapper::render(std::shared_ptr<Star> star) {
+
 
   std::string title =
-      planet->getName() + "###PlanetWrapper_" + std::to_string(planet->getId());
+      star->getName() + "###StarWrapper_" + std::to_string(star->getId());
 
   ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_DefaultOpen;
 
   ImGui::Begin(title.c_str());
-  ImGui::Text("Name: %s", planet->getName().c_str());
+  ImGui::Text("Name: %s", star->getName().c_str());
   ImGui::Separator();
 
   if (ImGui::TreeNodeEx("Mass", flag)) {
-    float mass = planet->getMass();
+    float mass = star->getMass();
 
     ImGui::DragFloat("Mass", &mass);
 
-    planet->setMass(mass);
+    star->setMass(mass);
     ImGui::TreePop();
   }
 
-  ImGui::Text("Radius: %.3e", planet->getRadius());
+  ImGui::Text("Radius: %.3e", star->getRadius());
   if (ImGui::TreeNodeEx("Radius", flag)) {
-    float radius = planet->getRadius();
+    float radius = star->getRadius();
 
     ImGui::DragFloat("Radius", &radius);
 
-    planet->setRadius(radius);
+    star->setRadius(radius);
     ImGui::TreePop();
   }
 
   if (ImGui::TreeNodeEx("Position", flag)) {
-    ImVec2 pos = planet->getPos();
+    ImVec2 pos = star->getPos();
 
     ImGui::DragFloat("X", &pos.x);
     ImGui::DragFloat("Y", &pos.y);
 
-    planet->updatePos(pos);
+    star->updatePos(pos);
 
     ImGui::TreePop();
   }
