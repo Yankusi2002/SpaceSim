@@ -7,8 +7,7 @@
 #include <memory>
 #include <vector>
 
-constexpr float GRAVITATION_CONSTANT = 0.0002959122f;
-constexpr float SIMULATION_DAYS_PER_SECOND = 30.0f;
+#define GRAVITATION_CONSTANT 6.67430e-11f
 
 class Simulation {
 public:
@@ -27,7 +26,6 @@ private:
   float calculateGravitationalPull(std::shared_ptr<CelestialBody> body1,
                                    std::shared_ptr<CelestialBody> body2,
                                    float distance);
-  void initializeCircularOrbit(const std::shared_ptr<Planet> &planet);
 
   std::vector<std::shared_ptr<Planet>> m_planets;
   std::vector<std::shared_ptr<Star>> m_stars;
