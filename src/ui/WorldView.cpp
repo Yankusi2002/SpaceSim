@@ -29,14 +29,24 @@ void WorldView::render(Simulation &simulation) {
   for (auto planet : planets) {
     ImVec2 pos = planet->getPos();
     ImVec2 screenPos = WorldToScreen(pos, canvasPos, canvasSize);
-    // Draw Planet 
-    drawList->AddCircleFilled(screenPos, planet->getRadius(), IM_COL32(100, 150, 255, 255));
+    // Draw Planet
+    drawList->AddCircleFilled(screenPos, planet->getRadius(),
+                              IM_COL32(100, 150, 255, 255));
+    std::vector<ImVec2> traces = planet->getTrace();
+    ImVec2 lastPosition = ImVec2(0, 0);
+    for (auto trace : traces) {
+      if (lastPosition.x != 0 && lastPosition.y != 0) {
+        drawList->AddLine(lastPosition, WorldToScreen(trace,canvasPos, canvasSize), IM_COL32(255,255,255,255),3);
+      }
+      lastPosition = WorldToScreen(trace, canvasPos, canvasSize);
+    }
   }
   auto stars = simulation.getStars();
-  for(auto star: stars){
+  for (auto star : stars) {
     ImVec2 pos = star->getPos();
     ImVec2 screenPos = WorldToScreen(pos, canvasPos, canvasSize);
-    drawList->AddCircle(screenPos, star->getRadius(), IM_COL32(255, 255, 0, 255));
+    drawList->AddCircle(screenPos, star->getRadius(),
+                        IM_COL32(255, 255, 0, 255));
   }
 
   ImGui::Dummy(canvasSize);
@@ -51,7 +61,7 @@ ImVec2 WorldView::WorldToScreen(ImVec2 position, ImVec2 canvasPos,
   double y = position.y * scale;
 
   float screenPosX = (canvasPos.x + canvasSize.x) * 0.5f + x;
-  float sceenPosY = (canvasPos.y + canvasSize.y)* 0.5f - y;
+  float sceenPosY = (canvasPos.y + canvasSize.y) * 0.5f - y;
 
   return ImVec2(screenPosX, sceenPosY);
 }

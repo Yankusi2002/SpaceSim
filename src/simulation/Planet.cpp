@@ -1,5 +1,6 @@
 #include "Planet.hpp"
 #include "imgui.h"
+#include <vector>
 
 Planet::Planet(int id, const std::string& name, bool habitable,
                CelestialBody::Position position, float mass, float radius)
@@ -26,6 +27,8 @@ void Planet::update(double deltaTime) {
     // Position verändern: Position = alte Position + (Geschwindigkeit * Zeit)
     m_position.x += m_velocity.x * deltaTime;
     m_position.y += m_velocity.y * deltaTime;
+
+    this->setTrace(ImVec2(m_position.x, m_position.y ));
 
 }
 
@@ -61,6 +64,19 @@ bool Planet::getGraviationForceSet(){
 void Planet::setGravitationAcceleration(ImVec2 acceleration){
   m_gravitationAcceleration = acceleration;
 }
+
+void Planet::deleteOldestTrace(){
+  m_trace.pop_back();
+}
+
+void Planet::setTrace(ImVec2 latestPosition){
+  m_trace.push_back(latestPosition);
+}
+std::vector<ImVec2> Planet::getTrace()
+{
+  return m_trace;
+}
+
 
 
 
