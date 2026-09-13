@@ -45,7 +45,6 @@ void Simulation::update(double deltaTime) {
       float newVy = planet->getVelocity().y + (ay * deltaTime);
 
       planet->setVelocity(ImVec2(newVx, newVy));
-
       planet->update(deltaTime);
     }
   }
