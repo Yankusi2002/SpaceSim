@@ -33,10 +33,16 @@ public:
   void setVelocity(ImVec2 velocity);
   ImVec2 getVelocity() const;
 
+  void setTrace(ImVec2 latestPosition);
+  void deleteOldestTrace();
+  std::vector<ImVec2> getTrace();
+
 private:
   bool habitable;
   float m_gravitationForce;
   bool m_gravitationForceSet = false;
   ImVec2 m_velocity;
   ImVec2 m_gravitationAcceleration;
+
+  std::vector<ImVec2> m_trace; 
 };

@@ -8,6 +8,7 @@
 #include <vector>
 
 #define GRAVITATION_CONSTANT 50.0f
+#define FIXED_DT 0.00833333f
 
 class Simulation {
 public:
@@ -23,10 +24,17 @@ public:
 private:
   float getDistance(std::shared_ptr<CelestialBody> body1,
                     std::shared_ptr<CelestialBody> body2);
-  float calculateGravitationalPull(std::shared_ptr<CelestialBody> body1,
+float calculateGravitationalPull(std::shared_ptr<CelestialBody> body1,
                                    std::shared_ptr<CelestialBody> body2,
                                    float distance);
 
   std::vector<std::shared_ptr<Planet>> m_planets;
   std::vector<std::shared_ptr<Star>> m_stars;
+  
+  void step(double dt);
+
+  /* Time */
+  double m_accumulateor = 0.0; 
+  double m_timeScale = 1.0;
+
 };

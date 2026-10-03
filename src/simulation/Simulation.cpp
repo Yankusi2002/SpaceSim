@@ -2,12 +2,32 @@
 #include "Planet.hpp"
 #include "Star.hpp"
 #include "imgui.h"
+#include <algorithm>
 #include <cmath>
-#include <future>
+
 #include <memory>
 #include <vector>
 
+double MAX_FRAME_TIME = 0.25f;
+
+
 void Simulation::update(double deltaTime) {
+
+
+    m_accumulateor += std::min(deltaTime, MAX_FRAME_TIME) * m_timeScale; // Add deltaTime to the accumulator
+    
+    if(m_accumulateor >= FIXED_DT) // If accumulated time is at least fixed delta time 
+    { 
+        step(FIXED_DT); // do physics step 
+        m_accumulateor -= FIXED_DT;
+    }
+
+}
+
+
+
+
+void Simulation::step(double deltaTime) {
   // Update the simulation state based on the elapsed time
   // This function will handle the physics and interactions of celestial bodies
 
@@ -49,6 +69,7 @@ void Simulation::update(double deltaTime) {
     }
   }
 }
+
 
 std::vector<std::shared_ptr<Star>> Simulation::getStars() { return m_stars; }
 
