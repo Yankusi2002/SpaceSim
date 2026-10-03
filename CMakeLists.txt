@@ -14,6 +14,7 @@ add_executable(SpaceSimulation
     src/simulation/Star.cpp
     src/simulation/CelestialBody.cpp
     src/simulation/Simulation.cpp
+    src/simulation/Sprites.cpp
     imgui/imgui.cpp
     imgui/imgui_draw.cpp
     imgui/imgui_tables.cpp

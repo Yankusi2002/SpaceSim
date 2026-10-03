@@ -1,4 +1,5 @@
 #include "WorldView.hpp"
+#include "Sprites.hpp"
 #include "imgui.h"
 
 bool WorldView::getShow() { return this->m_show; }
@@ -29,14 +30,20 @@ void WorldView::render(Simulation &simulation) {
   for (auto planet : planets) {
     ImVec2 pos = planet->getPos();
     ImVec2 screenPos = WorldToScreen(pos, canvasPos, canvasSize);
+    float t = (float)ImGui::GetTime();
     // Draw Planet
-    drawList->AddCircleFilled(screenPos, planet->getRadius(),
-                              IM_COL32(100, 150, 255, 255));
+    // Planet (Winkel = Zeit * Drehgeschwindigkeit, pro Planet etwas anders)
+    if (const SpriteTexture *tex = Sprites::get("./src/assets/planet1.png")) {
+      Sprites::drawSprite(drawList, *tex, screenPos, planet->getRadius(),
+                          t * 0.3f);
+    }
     std::vector<ImVec2> traces = planet->getTrace();
     ImVec2 lastPosition = ImVec2(0, 0);
     for (auto trace : traces) {
       if (lastPosition.x != 0 && lastPosition.y != 0) {
-        drawList->AddLine(lastPosition, WorldToScreen(trace,canvasPos, canvasSize), IM_COL32(255,255,255,255),3);
+        drawList->AddLine(lastPosition,
+                          WorldToScreen(trace, canvasPos, canvasSize),
+                          IM_COL32(255, 255, 255, 255), 3);
       }
       lastPosition = WorldToScreen(trace, canvasPos, canvasSize);
     }
@@ -45,8 +52,15 @@ void WorldView::render(Simulation &simulation) {
   for (auto star : stars) {
     ImVec2 pos = star->getPos();
     ImVec2 screenPos = WorldToScreen(pos, canvasPos, canvasSize);
-    drawList->AddCircle(screenPos, star->getRadius(),
-                        IM_COL32(255, 255, 0, 255));
+    float t = (float)ImGui::GetTime();
+    if (const SpriteTexture *tex = Sprites::get("./src/assets/star1.png")) {
+      Sprites::drawSprite(drawList, *tex, screenPos, star->getRadius(),
+                          t * 0.05f);
+    } else {
+      // Fallback, falls das Bild fehlt
+      drawList->AddCircleFilled(screenPos, star->getRadius(),
+                                IM_COL32(255, 200, 0, 255));
+    }
   }
 
   ImGui::Dummy(canvasSize);
