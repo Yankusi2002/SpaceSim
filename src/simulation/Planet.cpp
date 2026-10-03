@@ -70,6 +70,9 @@ void Planet::deleteOldestTrace(){
 }
 
 void Planet::setTrace(ImVec2 latestPosition){
+  if (m_trace.size() >= 1000) {
+    m_trace.erase(m_trace.begin()); 
+  }
   m_trace.push_back(latestPosition);
 }
 std::vector<ImVec2> Planet::getTrace()
