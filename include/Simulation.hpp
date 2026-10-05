@@ -32,6 +32,7 @@ float calculateGravitationalPull(std::shared_ptr<CelestialBody> body1,
   std::vector<std::shared_ptr<Star>> m_stars;
   
   void step(double dt);
+  ImVec2 calculateAcceleration(std::shared_ptr<Planet> planet, std::shared_ptr<Star> star);
 
   /* Time */
   double m_accumulateor = 0.0; 

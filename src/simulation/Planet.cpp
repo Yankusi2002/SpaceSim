@@ -65,12 +65,16 @@ void Planet::setGravitationAcceleration(ImVec2 acceleration){
   m_gravitationAcceleration = acceleration;
 }
 
+ImVec2 Planet::getGravitationAcceleration(){
+  return m_gravitationAcceleration;
+}
+
 void Planet::deleteOldestTrace(){
   m_trace.pop_back();
 }
 
 void Planet::setTrace(ImVec2 latestPosition){
-  if (m_trace.size() >= 1000) {
+  if (m_trace.size() >= 100000) {
     m_trace.erase(m_trace.begin()); 
   }
   m_trace.push_back(latestPosition);

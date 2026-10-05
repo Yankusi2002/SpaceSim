@@ -30,6 +30,8 @@ public:
   bool getGraviationForceSet();
   
   void setGravitationAcceleration(ImVec2 acceleration);
+  ImVec2 getGravitationAcceleration();
+  
   void setVelocity(ImVec2 velocity);
   ImVec2 getVelocity() const;
 

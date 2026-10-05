@@ -33,7 +33,7 @@ void WorldView::render(Simulation &simulation) {
     float t = (float)ImGui::GetTime();
     // Draw Planet
     // Planet (Winkel = Zeit * Drehgeschwindigkeit, pro Planet etwas anders)
-    if (const SpriteTexture *tex = Sprites::get("./src/assets/planet1.png")) {
+    if (const SpriteTexture *tex = Sprites::get("./src/assets/planet" + std::to_string(planet->getId()) + ".png")) {
       Sprites::drawSprite(drawList, *tex, screenPos, planet->getRadius(),
                           t * 0.3f);
     }

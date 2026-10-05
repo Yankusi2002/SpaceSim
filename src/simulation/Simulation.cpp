@@ -11,63 +11,78 @@
 double MAX_FRAME_TIME = 0.25f;
 
 
-void Simulation::update(double deltaTime) {
+void Simulation::update(double deltaTime)
+{
+    deltaTime = std::min(deltaTime, MAX_FRAME_TIME);
 
+    m_accumulateor += deltaTime * m_timeScale;
 
-    m_accumulateor += std::min(deltaTime, MAX_FRAME_TIME) * m_timeScale; // Add deltaTime to the accumulator
-    
-    if(m_accumulateor >= FIXED_DT) // If accumulated time is at least fixed delta time 
-    { 
-        step(FIXED_DT); // do physics step 
+    while (m_accumulateor >= FIXED_DT)
+    {
+        step(FIXED_DT);
         m_accumulateor -= FIXED_DT;
     }
-
 }
 
 
+ImVec2 Simulation::calculateAcceleration(std::shared_ptr<Planet> planet, std::shared_ptr<Star> star) {
+  float deltaX = star->getPos().x - planet->getPos().x;
+  float deltaY = star->getPos().y - planet->getPos().y;
 
+  float distance = getDistance(star, planet);
+
+  float force = calculateGravitationalPull(star, planet, distance);
+
+  planet->setGravitationForce(force);
+
+  float acceleration = force / planet->getMass();
+
+  float ax = acceleration * (deltaX / distance);
+  float ay = acceleration * (deltaY / distance);
+
+  ImVec2 newAcceleration = ImVec2(ax, ay);
+
+  return newAcceleration;
+
+}
 
 void Simulation::step(double deltaTime) {
-  // Update the simulation state based on the elapsed time
-  // This function will handle the physics and interactions of celestial bodies
 
-  // Check & Update Star
-
-  // Update Planet Position based on Gravity
-  // For now only include the Gravatiy from a Star
-
-  // Loop through every Planet
-  // Get the Gravitation Pull from the Star based on the Distance
-  for (auto planet : m_planets) {
-    // Calculate distance to star
-    if (!m_stars.empty()) {
-      auto star = m_stars[0];
-      float deltaX = star->getPos().x - planet->getPos().x;
-      float deltaY = star->getPos().y - planet->getPos().y;
-      float distance = getDistance(star, planet);
-
-      float force = calculateGravitationalPull(star, planet, distance);
-      planet->setGravitationForce(force);
-
-      /// a = F / m
-      float accelerationTotal = force / planet->getMass();
-      float ax = 0;
-      float ay = 0;
-      if (distance >= 0.1f) {
-        /// Acceleration direction
-        ax = accelerationTotal * (deltaX / distance);
-        ay = accelerationTotal * (deltaY / distance);
-      }
-
-      planet->setGravitationAcceleration(ImVec2(ax, ay));
-
-      float newVx = planet->getVelocity().x + (ax * deltaTime);
-      float newVy = planet->getVelocity().y + (ay * deltaTime);
-
-      planet->setVelocity(ImVec2(newVx, newVy));
-      planet->update(deltaTime);
-    }
+  if (m_stars.empty()) {
+    return; 
   }
+
+  const auto &star = m_stars[0];
+  for (const auto &planet: m_planets)
+  {
+    ImVec2 acceleration = calculateAcceleration(planet, star);
+
+    planet->setGravitationAcceleration(acceleration);
+    
+    ImVec2 velocity = planet->getVelocity();
+    float dt = static_cast<float>(deltaTime);
+
+    float newX = planet->getPos().x + velocity.x * dt + 0.5f * acceleration.x * dt * dt;
+    float newY = planet->getPos().y + velocity.y * dt + 0.5f * acceleration.y * dt * dt;
+
+    planet->updatePos(ImVec2(newX, newY));
+
+    ImVec2 newAcceleration = calculateAcceleration(planet, star);
+
+    float newVx = velocity.x + 0.5f * (newAcceleration.x + newAcceleration.x) * dt;
+    float newVy = velocity.y + 0.5f * (newAcceleration.y + newAcceleration.y) * dt;
+
+    planet->setVelocity(ImVec2(newVx, newVy));
+    planet->setGravitationAcceleration(newAcceleration);
+
+    planet->setTrace(ImVec2(newX,newY));
+
+
+    
+    
+  }
+
+
 }
 
 
